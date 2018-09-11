@@ -1,0 +1,71 @@
+package main;
+import static spark.Spark.*;
+
+import com.google.gson.Gson;
+
+import e.StatusResponse;
+import entity.Shopping;
+import logic.ProcessShoppingData;
+import structure.StandardResponse;
+
+public class Entry {
+
+	static ProcessShoppingData psd = new ProcessShoppingData();
+
+
+    public static void main(String[] args) {
+    	options("/*",
+    	        (request, response) -> {
+
+    	            String accessControlRequestHeaders = request
+    	                    .headers("Access-Control-Request-Headers");
+    	            if (accessControlRequestHeaders != null) {
+    	                response.header("Access-Control-Allow-Headers",
+    	                        accessControlRequestHeaders);
+    	            }
+
+    	            String accessControlRequestMethod = request
+    	                    .headers("Access-Control-Request-Method");
+    	            if (accessControlRequestMethod != null) {
+    	                response.header("Access-Control-Allow-Methods",
+    	                        accessControlRequestMethod);
+    	            }
+
+    	            return "OK";
+    	        });
+
+    	after("/remey/get/*",(request, response) -> response.type("application/json"));
+    	after("/remey/get/*",(request, response) -> response	.header("Access-Control-Allow-Origin", "*"));
+    	after("/remey/get/*",(request, response) -> response	.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS"));
+    	after("/remey/get/*",(request, response) -> response	.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"));
+
+
+
+    	//今日のデータを取得
+        get("/remey/get/today/:user", (req, res) -> {
+
+        	/*List shopping =
+        	return  new Gson().toJson(
+        		      new StandardResponse(StatusResponse.SUCCESS,new Gson()
+        		    	        .toJsonTree()));
+       		*/
+        	return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
+        });
+
+        //月でデータを取得
+        get("/remey/get/month/:year/:month/:user", (req, res) -> {
+        	return "";
+        });
+
+        //データ登録
+    	post("/remey/post/:user", (req, res) -> {
+    		Shopping shopping = new Gson().fromJson(req.body(), Shopping.class);
+    		if(psd.Insert(shopping)){
+    			return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
+    		}else{
+    			return new Gson().toJson(new StandardResponse(StatusResponse.ERROR));
+    		}
+    	});
+
+    }
+}

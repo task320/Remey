@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="フィールド &apos;entity.Shopping.user&apos; を &apos;entity.Shopping&apos;にカプセル化します&#x0D;&#x0A;- 元のプロジェクト: &apos;Remey&apos;&#x0D;&#x0A;- オリジナル要素: &apos;entity.Shopping.user&apos;&#x0D;&#x0A;- getter メソッド名: &apos;getUser&apos;&#x0D;&#x0A;- setter メソッド名: &apos;setUser&apos;&#x0D;&#x0A;- フィールドの可視性: &apos;private&apos;&#x0D;&#x0A;- 宣言型の getter および setter メソッドを使用" comments="false" declaring="true" description="フィールド &apos;user&apos; をカプセル化します" flags="589830" getter="getUser" id="org.eclipse.jdt.ui.self.encapsulate" input="/src&lt;entity{Shopping.java[Shopping^user" insertion="5" setter="setUser" stamp="1532852908970" version="1.0" visibility="2"/>
+</session>
