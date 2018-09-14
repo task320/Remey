@@ -1,6 +1,6 @@
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,\u30ED\u30FC\u30AB\u30EB/arch=x86_64
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,\u30ED\u30FC\u30AB\u30EB/os=win32
-configDescList=org.eclipse.launchbar.core.descriptorType.default\:Entry (1),org.eclipse.launchbar.core.descriptorType.default\:\u30ED\u30FC\u30AB\u30EB\u30FB\u30DB\u30B9\u30C8 \u306E Tomcat8 (Java8),org.eclipse.launchbar.core.descriptorType.default\:Remey,org.eclipse.launchbar.core.descriptorType.default\:Entry
+configDescList=org.eclipse.launchbar.core.descriptorType.default\:Entry (1),org.eclipse.launchbar.core.descriptorType.default\:\u30ED\u30FC\u30AB\u30EB\u30FB\u30DB\u30B9\u30C8 \u306E Tomcat8 (Java8),org.eclipse.launchbar.core.descriptorType.default\:Remey,org.eclipse.launchbar.core.descriptorType.default\:Entry,org.eclipse.launchbar.core.descriptorType.default\:Remey (1),org.eclipse.launchbar.core.descriptorType.default\:Remey (2),org.eclipse.launchbar.core.descriptorType.default\:Remey (3)
 eclipse.preferences.version=1
 org.eclipse.launchbar.core.descriptorType.default\:Entry\ (1)/activeLaunchMode=debug
 org.eclipse.launchbar.core.descriptorType.default\:Entry\ (1)/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:\u30ED\u30FC\u30AB\u30EB
