@@ -5,21 +5,28 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import db.DbInfoPostgresql;
+import settings.SettingReader;
+import settings.yaml.object.Settings;
 
 public class DaoSuper {
 
 	Connection conn = null;
 	PreparedStatement pStmt = null;
+	Settings settings = SettingReader.getSettings();
 
 	public DaoSuper() throws Exception{
-		initConection(new DbInfoPostgresql());
+		initConection();
 	}
 
-	private void initConection(DbInfoPostgresql info) throws Exception{
+	private void initConection() throws Exception{
 		try {
-			Class.forName(info.DRIVER_CLASS);
-			conn = DriverManager.getConnection(info.JDBC_URL,info.DB_USER,info.DB_PASS);
+			String classDriver = settings.getDbSettings().getDriverClass();
+			String jdbcUrl = settings.getDbSettings().getJdbcUrl();
+			String dbUser = settings.getDbSettings().getDbUser();
+			String dbPass = settings.getDbSettings().getDbPass();
+
+			Class.forName(classDriver);
+			conn = DriverManager.getConnection(jdbcUrl,dbUser,dbPass);
 		} catch (SQLException | ClassNotFoundException e) {
 			throw e;
 		}

@@ -1,0 +1,5 @@
+dbSettings:
+  driverClass: "org.postgresql.Driver"
+  jdbcUrl: "jdbc:postgresql://127.0.0.1:5432/remey"
+  dbUser: "task320_remey"
+  dbPass: "Sayonara<>51"
