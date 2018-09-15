@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="&apos;structure.StandardResponse&apos; のフィールド &apos;statusTest&apos; の名前を&apos;status&apos; に変更します&#x0D;&#x0A;- 元のプロジェクト: &apos;Remey&apos;&#x0D;&#x0A;- オリジナル要素: &apos;structure.StandardResponse.statusTest&apos;&#x0D;&#x0A;- 名前変更済み要素: &apos;structure.StandardResponse.status&apos;&#x0D;&#x0A;- リファクタリングされた要素の参照を更新&#x0D;&#x0A;- コメントおよびストリング内のテキスト出現箇所の更新" delegate="false" deprecate="false" description="フィールド名 &apos;statusTest&apos; の変更" flags="589826" getter="false" id="org.eclipse.jdt.ui.rename.field" input="/src&lt;structure{StandardResponse.java[StandardResponse^statusTest" name="status" references="true" setter="false" stamp="1533130182254" textual="false" version="1.0"/>
-</session>

@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Copy element &apos;Shopping.java&apos; to &apos;Remey/src/entity&apos;&#x0D;&#x0A;- 元のプロジェクト: &apos;Remey&apos;&#x0D;&#x0A;- 宛先要素: &apos;Remey/src/entity&apos;&#x0D;&#x0A;- オリジナル要素: &apos;entity.Shopping.java&apos;" description="コンパイル単位をコピー" destination="/src&lt;entity" element1="/src&lt;entity{Shopping.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1534950329513" units="1" version="1.0"/>
-</session>
