@@ -8,16 +8,16 @@ import java.util.List;
 import dao.DaoShopping;
 import entity.ConditionsGetInfo;
 import entity.Shopping;
+import remey.jooq.tables.records.ShoppingRecord;
 
 public class ProcessShoppingData {
 
 	public int Insert(Shopping data){
 		try{
 			DaoShopping ds = new DaoShopping();
-			ResultSet result = ds.InsertShopping(data);
+			ShoppingRecord result = ds.InsertShopping(data);
 
-			result.next();
-			return result.getInt("id");
+			return result.getId();
 		}
 		catch(Exception e){
 			System.out.println(e.getMessage());

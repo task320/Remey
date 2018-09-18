@@ -2,9 +2,16 @@ package dao;
 
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+
+import org.jooq.DSLContext;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
 
 import entity.ConditionsGetInfo;
 import entity.Shopping;
+import remey.jooq.Tables;
+import remey.jooq.tables.records.ShoppingRecord;
 import sql.SqlShoppingData;
 
 public class DaoShopping extends DaoSuper {
@@ -13,16 +20,18 @@ public class DaoShopping extends DaoSuper {
 		super();
 	}
 
-	public ResultSet InsertShopping(Shopping data) throws Exception{
+	public ShoppingRecord InsertShopping(Shopping data) throws Exception{
 		try{
-			StringBuilder sql = SqlShoppingData.InsertShoppingData();
-			pStmt = conn.prepareStatement(sql.toString());
-
-			pStmt.setString(1, data.getUser());
-			pStmt.setInt(2, data.getAmount());
-			pStmt.setDate(3, (Date) data.getSqlDate());
-
-			ResultSet result = pStmt.executeQuery();
+			DSLContext create = DSL.using(conn, SQLDialect.POSTGRES);
+			 ShoppingRecord result = create
+					.insertInto(Tables.SHOPPING)
+					.set(Tables.SHOPPING. 				USERS_ID,data.getUser())
+					.set(Tables.SHOPPING.AMOUNT, 		data.getAmount())
+					.set(Tables.SHOPPING.SHOPPING_AT, 	new Timestamp(data.getDate().getTime()))
+					.set(Tables.SHOPPING.CREATE_AT, 	DSL.currentTimestamp())
+					.set(Tables.SHOPPING.UPDATE_AT, 	DSL.currentTimestamp())
+					.returning(Tables.SHOPPING.ID)
+					.fetchOne();
 
 			return result;
 		}
