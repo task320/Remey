@@ -5,6 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.jooq.DSLContext;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
+
 import settings.SettingReader;
 import settings.yaml.object.Settings;
 
@@ -13,6 +17,7 @@ public class DaoSuper {
 	Connection conn = null;
 	PreparedStatement pStmt = null;
 	Settings settings = SettingReader.getSettings();
+	DSLContext create = null;
 
 	public DaoSuper() throws Exception{
 		initConection();
@@ -27,10 +32,22 @@ public class DaoSuper {
 
 			Class.forName(classDriver);
 			conn = DriverManager.getConnection(jdbcUrl,dbUser,dbPass);
+			create = DSL.using(conn, SQLDialect.POSTGRES);
 		} catch (SQLException | ClassNotFoundException e) {
 			throw e;
 		}
 
+	}
+
+	protected void closeConn() throws Exception{
+		if(conn != null){
+			try{
+				conn.close();
+			}
+			catch(Exception e){
+				throw e;
+			}
+		}
 	}
 
 }

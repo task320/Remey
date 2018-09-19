@@ -4,8 +4,6 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
-import org.jooq.DSLContext;
-import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
 import entity.ConditionsGetInfo;
@@ -22,7 +20,6 @@ public class DaoShopping extends DaoSuper {
 
 	public ShoppingRecord InsertShopping(Shopping data) throws Exception{
 		try{
-			DSLContext create = DSL.using(conn, SQLDialect.POSTGRES);
 			 ShoppingRecord result = create
 					.insertInto(Tables.SHOPPING)
 					.set(Tables.SHOPPING. 				USERS_ID,data.getUser())
@@ -39,14 +36,7 @@ public class DaoShopping extends DaoSuper {
 			throw e;
 		}
 		finally{
-			if(conn != null){
-				try{
-					conn.close();
-				}
-				catch(Exception e){
-					throw e;
-				}
-			}
+			closeConn();
 		}
 	}
 
@@ -69,14 +59,7 @@ public class DaoShopping extends DaoSuper {
 			throw e;
 		}
 		finally{
-			if(conn != null){
-				try{
-					conn.close();
-				}
-				catch(Exception e){
-					throw e;
-				}
-			}
+			closeConn();
 		}
 	}
 

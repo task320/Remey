@@ -1,6 +1,7 @@
 package main;
 import static spark.Spark.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -9,12 +10,14 @@ import com.google.gson.GsonBuilder;
 import e.StatusResponse;
 import entity.ConditionsGetInfo;
 import entity.Shopping;
+import logic.CreateObjectValues;
 import logic.ProcessShoppingData;
 import structure.StandardResponse;
 
 public class Entry {
 
 	static ProcessShoppingData psd = new ProcessShoppingData();
+	static CreateObjectValues cov = new CreateObjectValues();
 
 
     public static void main(String[] args) {
@@ -86,6 +89,7 @@ public class Entry {
 
         //すべてのデータを取得
         get("/remey/get/all/:user", (req, res) -> {
+
         	return "";
         });
 
@@ -107,6 +111,18 @@ public class Entry {
         		}
     		}
     		catch(Exception e){
+    			System.out.println(e.getMessage());
+    			e.printStackTrace();
+    			return new Gson().toJson(new StandardResponse(StatusResponse.ERROR));
+    		}
+    	});
+
+
+    	get("/remey/get/month-list/:user", (req, res) -> {
+    		try{
+	    		HashMap<Integer,List<Integer>> pullDownYearMonthValues = cov.getPullDownYearMonthValues("task_mon"); //debug_code
+	    		return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS,new Gson().toJsonTree(pullDownYearMonthValues)));
+    		}catch(Exception e){
     			System.out.println(e.getMessage());
     			e.printStackTrace();
     			return new Gson().toJson(new StandardResponse(StatusResponse.ERROR));
