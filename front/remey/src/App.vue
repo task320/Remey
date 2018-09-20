@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-	<input v-model="shopping_date" placeholder="Shopping Date">
+	<input v-model="shoppingDate" placeholder="Shopping Date">
 	\<input v-model.number="amount" placeholder="Amount">
-	<button v-on:click="postShoppingAmount">POST</button><br />
+	<button @click="postShoppingAmount({'shoppingDate': shoppingDate, 'amount': amount})">POST</button><br />
 	<br />
-	<button v-on:click="getTest">Get</button><br /><br />
-	RESULT:{{ result }}<br />
-	JSON:{{response_json}}<br />
+	<button @click="getMonthShopping()">Get</button><br /><br />
+	RESULT:{{ resultApi }}<br />
+	JSON:{{responseJson}}<br />
 	<br />
 	<table class="center">
-		<tr v-for="data in shopping_data" :key="data.shopping_id">
+		<tr v-for="data in shoppingData" :key="data.shopping_id">
 			<td>{{data.shopping_id}}</td><td>{{data.date}}</td><td>{{data.amount}}</td>
 		</tr>
 	</table>
@@ -17,50 +17,24 @@
 </template>
 
 <script>
-import axios from 'axios';
+import {mapState, mapActions} from 'vuex'
 
 export default {
-  name: 'app',
   data(){
-	return{
-		result: 'Defult',
-		shopping_data: [],
-		response_json:'Nothing'
-	}
-  },
-  methods: {
-	postShoppingAmount: function(){
-		alert('TEST')      
-		axios.post('http://localhost:8081/remey/post/task_mon',{
-			date: this.shopping_date,
-			amount: this.amount
-		})
-		.then(response => {
-			alert('response');
-			this.result = response.data.status;
-			this.response_json = response.data
-			if(this.result == 'SUCCESS'){
-				var res_value = response.data.values; 
-				this.shopping_data.unshift({"shopping_id":res_value.shopping_id, "date":res_value.date, "amount":res_value.amount});
-			}
-		})
-		.catch(e => {
-			alert(e);
-			this.result = 'Error';
-		})
+		return{
+			shoppingDate: '',
+			amount: '0',
+			resultApi: 'Defult',
+			responseJson:'Nothing'
+		}
 	},
-	getTest: function(){
-		axios.get('http://localhost:8081/remey/get/month/2018/08/task_mon')
-		.then(response => {
-			alert(response.data.status);
-			this.result = response.data.status;
-			this.shopping_data = response.data.values
-		})
-		.catch(e => {
-			alert(e);
-		})
-	}
-  }
+  computed: mapState({
+	shoppingData: state => state.shopping.shoppingData
+  }),
+  methods: mapActions('shopping',[
+	'postShoppingAmount',
+	'getMonthShopping'
+  ])
 }
 </script>
 
