@@ -2,6 +2,7 @@
 	<div id="app">
 		<FormPostShopping/>
 		<br />
+		<SelectYearMonth/>
 		<br />
 		<ShoppingList/>
 	</div>
@@ -11,11 +12,13 @@
 
 import ShoppingList from './components/ShoppingList.vue'
 import FormPostShopping from './components/FormPostShopping.vue'
+import SelectYearMonth from './components/SelectYearMonth.vue'
 
 export default {
 	components: {
 		ShoppingList,
-		FormPostShopping
+		FormPostShopping,
+		SelectYearMonth
 	}
 }
 </script>

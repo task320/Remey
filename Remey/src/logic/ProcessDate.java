@@ -18,7 +18,7 @@ public class ProcessDate {
 		List<String> yearMonthList= new ArrayList<String>();
 
 		do{
-			yearMonthList.add(format.format(procCalendar));
+			yearMonthList.add(format.format(procCalendar.getTime()));
 			procCalendar.add(Calendar.MONTH, 1);
 		}while(now.get(Calendar.YEAR) > procCalendar.get(Calendar.YEAR)
 				|| (now.get(Calendar.YEAR) == procCalendar.get(Calendar.YEAR) && now.get(Calendar.MONTH) >= procCalendar.get(Calendar.MONTH)));

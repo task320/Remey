@@ -44,7 +44,7 @@ public class Entry {
         get("/remey/get/month/:year/:month/:user", (req, res) -> { return psd.getMonthlyShopping(req); });
 
         //ページロード時に必要なデータを取得
-        get("/remey/get/init-page", (req, res) -> { return ""; });
+        get("/remey/get/pull-down-year-month-values/:user", (req, res) -> { return cov.getPullDownYearMonthValues(req); });
 
         //データ登録
     	post("/remey/post/:user", (req, res) -> { return psd.insert(req); });

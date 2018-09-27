@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const state = {
-	shoppingData: []
+	shoppingData: [],
+	yearMonth: []
 }
 
 const mutations = {
@@ -10,6 +11,9 @@ const mutations = {
 	},
 	setShoppingDataList(state, data){
 		state.shoppingData = data
+	},
+	setPullDownYearMonthValues(state, data){
+		state.yearMonth = data
 	}
 }
 
@@ -36,7 +40,16 @@ const actions = {
 		.catch(e => {
 			alert(e);
 		})
-	}
+	},
+	getPullDownYearMonthValues({commit}){   		
+		axios.get('http://localhost:8081/remey/get/pull-down-year-month-values/task_mon')
+		.then(response => {
+			commit('setPullDownYearMonthValues',response.data.values); 
+		})
+		.catch(e => {
+			alert(e);
+		})
+	},
 }
 
 export default {

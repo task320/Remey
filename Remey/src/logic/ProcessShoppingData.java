@@ -20,10 +20,11 @@ public class ProcessShoppingData {
 
 	public String insert(Request req){
 		Shopping shopping = null;
+		String user = req.params(":user");
 		try{
 			Gson gson = new GsonBuilder().setDateFormat("yyyy/MM/dd").create();
 			shopping = gson.fromJson(req.body(), Shopping.class);
-			shopping.setUser("task_mon"); //debug_code
+			shopping.setUser(user);
 
 			DaoShopping ds = new DaoShopping();
 			ShoppingRecord result = ds.InsertShopping(shopping);
@@ -41,13 +42,14 @@ public class ProcessShoppingData {
 	public String getMonthlyShopping(Request req){
     	String year = req.params(":year");
     	String month = req.params(":month");
+    	String user = req.params(":user");
 
 		List<Shopping> shoppingList = new ArrayList<Shopping>();
 
 		try{
 			ConditionsGetInfo conditions = new ConditionsGetInfo("",null);
 			conditions.setData(year + "/" + month + "/01");
-			conditions.setUser("task_mon"); //debug_code
+			conditions.setUser(user);
 
 			DaoShopping ds = new DaoShopping();
 			ResultSet result = ds.SelectMonthlyShopping(conditions);
