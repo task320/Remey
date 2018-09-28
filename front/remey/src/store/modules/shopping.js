@@ -32,9 +32,8 @@ const actions = {
 			alert(e);
 		})
 	},
-	getMonthShopping: function({commit},value){
-		var [year, month] = value.split("/")
-		axios.get('http://localhost:8081/remey/get/month/' + year + '/' + month + '/task_mon')
+	getMonthShopping: function({commit}){
+		axios.get('http://localhost:8081/remey/get/month/2018/08/task_mon')
 		.then(response => {
 			commit('setShoppingDataList',response.data.values);
 		})

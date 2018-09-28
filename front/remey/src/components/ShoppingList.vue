@@ -14,7 +14,7 @@ export default{
 		shoppingData: state => state.shopping.shoppingData
 	}),
 	created(){
-		//this.$store.dispatch('shopping/getMonthShopping');
+		this.$store.dispatch('shopping/getMonthShopping');
 	}
 }
 </script>
