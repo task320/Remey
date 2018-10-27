@@ -1,8 +1,20 @@
 <template>
-	<div>
-		Shopping Date:<input v-model="shoppingDate" placeholder="Shopping Date">
-		/Amount:<input v-model.number="amount" placeholder="Amount">Yen<br /><br />
-		<button @click="postShoppingAmount({'shoppingDate': shoppingDate, 'amount': amount})">POST</button>
+	<div class="center">
+		<div class="post-shopping-data-table">
+			<table class="center-object">
+				<tr>
+					<th class="post-shopping-data">出費日付:</th>
+					<td class="post-shopping-data"><input v-model="shoppingDate" placeholder="yyyy/MM/dd"></td>
+				</tr>
+				<tr>
+					<th class="post-shopping-data">金額:</th>
+					<td class="post-shopping-data"><input v-model.number="amount" placeholder="">円</td>
+				</tr>
+			</table>
+		</div>
+		<button class="button" @click="postShoppingAmount({'shoppingDate': shoppingDate, 'amount': amount})">
+			記録
+		</button>
 	</div>
 </template>
 

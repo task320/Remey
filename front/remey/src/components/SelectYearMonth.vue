@@ -1,6 +1,6 @@
 <template>
-	<div>
-		Shopping Year/Month<br />
+	<div class="center">
+		<div class="shopping-year-month-header">出費日付 年/月</div>
 		<select v-model="shoppingYearMonth" @change="getShoppingList">
 			<option  v-for="(data, index) in yearMonth" :key="index" :value="data">{{ data }}</option>
 		</select>

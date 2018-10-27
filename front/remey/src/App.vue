@@ -1,10 +1,11 @@
 <template>
 	<div id="app">
 		<FormPostShopping/>
-		<br />
-		<SelectYearMonth/>
-		<br />
-		<ShoppingList/>
+		<div class="shopping-list">
+			<SelectYearMonth/>
+			<br />
+			<ShoppingList/>
+		</div>
 	</div>
 </template>
 

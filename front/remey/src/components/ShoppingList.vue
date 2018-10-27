@@ -1,7 +1,15 @@
 <template>
-	<table class="center">
-		<tr v-for="data in shoppingData" :key="data.shopping_id">
-			<td>{{data.shopping_id}}</td><td>{{data.date}}</td><td>{{data.amount}}</td>
+	<table class="center-object shopping-list">
+		<th class="common-style-shopping-list shopping-list-date">日付</th>
+		<th class="common-style-shopping-list shopping-list-amount">金額</th>
+		<tr class="common-style-shopping-list" v-for="data in shoppingData" :key="data.shopping_id">
+			<td class="common-style-shopping-list shopping-list-date">
+				{{data.date}}
+				<div :id=data.shopping_id />
+			</td>
+			<td class="common-style-shopping-list shopping-list-amount">
+				{{data.amount}} 円
+			</td>
 		</tr>
 	</table>
 </template>

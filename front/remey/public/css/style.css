@@ -1,13 +1,117 @@
-table {
-	border-collapse: collapse;
-	border: 1px solid black;
+
+body{
+	margin: 0px 0px 0px 0px;
+	font-size:18px;
+}
+.font-kosugi-maru { 
+	font-family: 'Kosugi Maru', sans-serif;
+}
+.title{
+	background-color:#00BCD4;
+	padding:12px 24px 12px 24px;
+}
+.main-title{
+	font-size:48px;
+	color:#FFFFFF;
+	padding:0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+.sub-title{
+	font-size:18px;
+	color:#FFFFFF;
+	padding:0px 0px 0px 0px;
+	margin: 0px 0px 0px 24px;
 }
 
-table.center{
+.center-object{
 	margin-left:auto;
 	margin-right:auto;
 }
 
-tr:hover {
-	background-color: #f5f5f5;
+.content{
+	margin:48px 24px 48px 24px;
 }
+
+.center{
+	text-align: center;
+}
+
+div.post-shopping-data-table{
+	margin:10px 10px 10px 10px;
+}
+th.post-shopping-data{
+	text-align:right;
+}
+td.post-shopping-data{
+	text-align:left;
+}
+
+
+.button{
+	border: none;
+	transition-duration: 0.1s;
+	background-color: #00BCD4;
+	font-size:18px;
+	text-decoration: none;
+	display: inline-block;
+    color: white;
+    padding: 8px 48px;
+}
+
+div.shopping-year-month-header{
+	padding:2px;
+}
+
+
+.button:hover {
+    box-shadow: 2px 2px 4px 2px rgba(0,0,0,0.2);
+}
+
+div.shopping-list{
+	margin:48px 24px 24px 24px;
+}
+
+table.shopping-list{
+	padding:10px;
+	border-collapse: collapse;
+	border: 1px solid black;
+}
+
+th.common-style-shopping-list{
+	font-size:28px;
+	font-weight:bold;
+	padding:10px;
+}
+tr:hover.common-style-shopping-list{
+	background-color: #FFCDE5;
+}
+td.common-style-shopping-list{
+	padding:10px;
+	font-size:20px;
+}
+
+th.shopping-list-date{
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-right: 1px solid #DDDDDD;
+}
+td.shopping-list-date{
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-right: 1px solid #DDDDDD;
+}
+
+th.shopping-list-amount{
+	width:200px;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px solid #DDDDDD;
+}
+td.shopping-list-amount{
+	text-align:right;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px solid #DDDDDD;
+}
+
+
