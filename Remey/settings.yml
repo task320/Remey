@@ -3,3 +3,10 @@ dbSettings:
   jdbcUrl: "jdbc:postgresql://127.0.0.1:5432/remey"
   dbUser: "task320_remey"
   dbPass: "Sayonara<>51"
+
+authSettings:
+  host: "http://localhost:8081"
+  clientId: ""
+  clientSecret: ""
+  callback: "http://localhost:8081/remey/get/auth_google_callback"
+  userInfoEndPoint: "https://www.googleapis.com/plus/v1/people/me/openIdConnect"
