@@ -1,4 +1,4 @@
-package e;
+package enums;
 
 public enum StatusResponse {
     SUCCESS ("Success"),

@@ -22,7 +22,7 @@ public class DaoShopping extends DaoSuper {
 		try{
 			 ShoppingRecord result = create
 					.insertInto(Tables.SHOPPING)
-					.set(Tables.SHOPPING. 				USERS_ID,data.getUser())
+					.set(Tables.SHOPPING.USERS_ID,		data.getUser())
 					.set(Tables.SHOPPING.AMOUNT, 		data.getAmount())
 					.set(Tables.SHOPPING.SHOPPING_AT, 	new Timestamp(data.getDate().getTime()))
 					.set(Tables.SHOPPING.CREATE_AT, 	DSL.currentTimestamp())

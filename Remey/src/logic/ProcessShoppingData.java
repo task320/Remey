@@ -9,9 +9,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import dao.DaoShopping;
-import e.StatusResponse;
 import entity.ConditionsGetInfo;
 import entity.Shopping;
+import enums.StatusResponse;
 import remey.jooq.tables.records.ShoppingRecord;
 import spark.Request;
 import structure.StandardResponse;
@@ -20,7 +20,7 @@ public class ProcessShoppingData {
 
 	public String insert(Request req){
 		Shopping shopping = null;
-		String user = req.params(":user");
+		String user = req.session().attribute("id");
 		try{
 			Gson gson = new GsonBuilder().setDateFormat("yyyy/MM/dd").create();
 			shopping = gson.fromJson(req.body(), Shopping.class);
@@ -42,7 +42,7 @@ public class ProcessShoppingData {
 	public String getMonthlyShopping(Request req){
     	String year = req.params(":year");
     	String month = req.params(":month");
-    	String user = req.params(":user");
+    	String user = req.session().attribute("id");
 
 		List<Shopping> shoppingList = new ArrayList<Shopping>();
 

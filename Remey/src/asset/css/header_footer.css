@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+.title{
+	background-color:#00BCD4;
+	padding:12px 24px 12px 24px;
+}
+.main-title{
+	font-size:48px;
+	color:#FFFFFF;
+	padding:0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+.sub-title{
+	font-size:18px;
+	color:#FFFFFF;
+	padding:0px 0px 0px 0px;
+	margin: 0px 0px 0px 24px;
+}

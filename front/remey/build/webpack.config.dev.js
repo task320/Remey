@@ -1,10 +1,15 @@
-'use strict'
-const { VueLoaderPlugin } = require('vue-loader')
+const {VueLoaderPlugin} = require('vue-loader');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const path = require('path');
+
 module.exports = {
   mode: 'development',
-  entry: [
-    './src/main.js'
-  ],
+  entry: './src/main.js',
+  output: {
+  	path: path.resolve(__dirname, '../../../Remey/src/asset'),
+  	filename: 'index_bundle.js'
+  },
   module: {
     rules: [
       {
@@ -14,6 +19,15 @@ module.exports = {
     ]
   },
   plugins: [
-    new VueLoaderPlugin()
+   new webpack.DefinePlugin({
+	  BASE_URL: JSON.stringify('')
+	}),
+    new VueLoaderPlugin(),
+    new HtmlWebpackPlugin({
+     inject: true,
+     filename: 'index.html',
+     template: 'src/assets/index.html'
+    }),
+
   ]
 }

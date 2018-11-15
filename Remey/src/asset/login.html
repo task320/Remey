@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="template :: head(~{::title},~{::link})">
+	<title>Remey</title>
+	<link rel="stylesheet" type="text/css" href="/css/login.css">
+	<link rel="stylesheet" type="text/css" href="/css/font.css">
+	<link rel="stylesheet" type="text/css" href="/css/common_layout.css">
+	<link rel="stylesheet" type="text/css" href="/css/header_footer.css">
+</head>
+<body>
+	<header>
+		<div th:replace="template :: header">header</div>
+	</header>
+	<div class="center_font font-kosugi-maru login_board">
+		<h2>とりあえず、出費をメモしとうか</h2>
+		<h3>Googleアカウントでログイン</h3>
+		<a href="/remey/auth_google">
+			<img class="google_login" src="/pict/btn_google_signin_normal.png">
+		</a>
+	</div>
+</body>
+</html>

@@ -2,7 +2,7 @@ package structure;
 
 import com.google.gson.JsonElement;
 
-import e.StatusResponse;
+import enums.StatusResponse;
 
 public class StandardResponse {
     private StatusResponse status;

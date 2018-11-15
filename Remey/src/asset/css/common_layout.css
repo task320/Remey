@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+body{
+	margin: 0px 0px 0px 0px;
+	font-size:18px;
+}
+
+.center_font{
+	text-align:center;
+}

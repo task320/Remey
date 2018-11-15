@@ -1,0 +1,10 @@
+<head th:fragment="head(title, links)">
+	<title th:replace="${title}">template</title>
+	<meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&amp;subset=japanese" rel="stylesheet">
+    <th:block th:replace="${links}" />
+</head>
+
+<div th:fragment="header" class="title center_font">
+	<span class="main-title">Reme\</span>
+</div>
