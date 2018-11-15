@@ -18,7 +18,7 @@ public class Entry {
 
     public static void main(String[] args) {
 
-    	port(8081);
+    	port(getHerokuAssignedPort());
 
     	staticFiles.location("/asset");
 
@@ -96,5 +96,13 @@ public class Entry {
         //データ登録
     	post("/remey/api/post/:user", (req, res) -> { return psd.insert(req); });
 
+    }
+
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 8081;
     }
 }
