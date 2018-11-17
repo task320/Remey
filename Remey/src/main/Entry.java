@@ -42,14 +42,14 @@ public class Entry {
     	            return "OK";
     	        });
 
-    	after("/remey/api/*",(request, response) -> response.type("application/json"));
-    	after("/remey/*",(request, response) -> response	.header("Access-Control-Allow-Origin", "*"));
-    	after("/remey/api/get/*",(request, response) -> response	.header("Access-Control-Allow-Methods", "GET"));
-    	after("/remey/*",(request, response) -> response	.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"));
-    	after("/remey/api/post/*",(request, response) -> response.header("Access-Control-Allow-Methods", "POST, OPTIONS"));
+    	after("/api/*",(request, response) -> response.type("application/json"));
+    	after("/*",(request, response) -> response	.header("Access-Control-Allow-Origin", "*"));
+    	after("/api/get/*",(request, response) -> response	.header("Access-Control-Allow-Methods", "GET"));
+    	after("/*",(request, response) -> response	.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"));
+    	after("/api/post/*",(request, response) -> response.header("Access-Control-Allow-Methods", "POST, OPTIONS"));
 
     	//ログインページ
-    	get("/remey", (req, res) -> {
+    	get("/", (req, res) -> {
     		try{
     			return OutputPageData.outputLoginPage();
     		}catch(Exception e){
@@ -60,7 +60,7 @@ public class Entry {
     		});
 
     	//セッションにIDが格納されているか
-    	before("/remey/main", (req, res) -> {
+    	before("/main", (req, res) -> {
     		try{
 	    		if(!ProcessLogin.isAuthorize(req, res)){
 	    			res.redirect("/remey");
@@ -70,7 +70,7 @@ public class Entry {
     		}
     	});
     	//メインページ
-    	get("/remey/main", (req, res) -> {
+    	get("/main", (req, res) -> {
     		try{
     			return OutputPageData.outputMainPage();
     		}catch(Exception e){
@@ -82,19 +82,19 @@ public class Entry {
     	});
 
         //月でデータを取得
-    	get("/remey/api/get/month/:year/:month", (req, res) -> { return psd.getMonthlyShopping(req);});
+    	get("/api/get/month/:year/:month", (req, res) -> { return psd.getMonthlyShopping(req);});
 
         //ページロード時に必要なデータを取得
-        get("/remey/api/get/pull-down-year-month-values", (req, res) -> { return cov.getPullDownYearMonthValues(req); });
+        get("/api/get/pull-down-year-month-values", (req, res) -> { return cov.getPullDownYearMonthValues(req); });
 
     	//Google認証
-    	get("/remey/auth_google", (req, res) -> {return OAuth2Google.oath2Redirect(req, res);});
+    	get("/auth_google", (req, res) -> {return OAuth2Google.oath2Redirect(req, res);});
 
     	//Googleログイン処理
-    	get("/remey/auth_google_callback", (req, res)->{return ProcessLogin.loginByGoogleInfo(req, res);});
+    	get("/auth_google_callback", (req, res)->{return ProcessLogin.loginByGoogleInfo(req, res);});
 
         //データ登録
-    	post("/remey/api/post/:user", (req, res) -> { return psd.insert(req); });
+    	post("/api/post/:user", (req, res) -> { return psd.insert(req); });
 
     }
 

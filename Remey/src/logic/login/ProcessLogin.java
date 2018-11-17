@@ -20,7 +20,7 @@ public class ProcessLogin {
 				}
 			}
 			req.session().attribute("id", info.getSub());
-			res.redirect("/remey/main");
+			res.redirect("/main");
 			return  new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
 		}catch(Exception e){
 			e.printStackTrace();

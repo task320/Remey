@@ -8,7 +8,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
   	path: path.resolve(__dirname, '../../../Remey/src/asset'),
-  	filename: 'index_bundle.js'
+  	filename: 'js/main.js'
   },
   module: {
     rules: [
@@ -25,8 +25,8 @@ module.exports = {
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
      inject: true,
-     filename: 'index.html',
-     template: 'src/assets/index.html'
+     filename: 'main.html',
+     template: 'src/assets/main.html'
     }),
 
   ]

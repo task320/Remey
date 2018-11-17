@@ -19,7 +19,7 @@ const mutations = {
 
 const actions = {
 	postShoppingAmount({commit}, {shoppingDate, amount}){   		
-		axios.post('/remey/api/post/shopping_data',{
+		axios.post('/api/post/shopping_data',{
 			date: shoppingDate,
 			amount: amount
 		})
@@ -34,7 +34,7 @@ const actions = {
 	},
 	getMonthShopping: function({commit},value){
 		var [year, month] = value.split("/")
-		axios.get('/remey/api/get/month/' + year + '/' + month)
+		axios.get('/api/get/month/' + year + '/' + month)
 		.then(response => {
 			commit('setShoppingDataList',response.data.values);
 		})
@@ -43,7 +43,7 @@ const actions = {
 		})
 	},
 	getPullDownYearMonthValues({commit}){   		
-		axios.get('/remey/api/get/pull-down-year-month-values')
+		axios.get('/api/get/pull-down-year-month-values')
 		.then(response => {
 			commit('setPullDownYearMonthValues',response.data.values); 
 		})

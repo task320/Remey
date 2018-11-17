@@ -19,7 +19,7 @@ public class OutputPageData {
 
 	public static String outputMainPage() throws Exception{
 		Map map = new HashMap();
-		return new ThymeleafTemplateEngine(PREFIX_MAIN,SUFFIX).render(new ModelAndView(map,"index"));
+		return new ThymeleafTemplateEngine(PREFIX_MAIN,SUFFIX).render(new ModelAndView(map,"main"));
 	}
 
 }
