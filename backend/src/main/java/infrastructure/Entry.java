@@ -1,9 +1,9 @@
 package infrastructure;
 
 import static spark.Spark.*;
-import adapters.controller.data.*;
 
-import infrastructure.connection.IDBConnection;
+import constant.HttpStatus;
+import infrastructure.connection.DBConnection;
 import infrastructure.connection.JooqPostgresqlConnection;
 import infrastructure.settings.SettingReader;
 import infrastructure.settings.yaml.object.Settings;
@@ -11,7 +11,7 @@ import infrastructure.settings.yaml.object.Settings;
 public class Entry {
     public static void main(String[] args) {
 		Settings settings = null;
-		IDBConnection connection = null;
+		DBConnection connection = null;
 
 		try {
 			settings = SettingReader.getSettings();
@@ -19,8 +19,8 @@ public class Entry {
 		}catch (Exception e){
 			return;
 		}
-
-    	options("/*",
+/**
+    	options("/api/*",
     	        (request, response) -> {
 
     	            String accessControlRequestHeaders = request
@@ -39,44 +39,24 @@ public class Entry {
 
     	            return "OK";
     	        });
+**/
+    	path("/api", () ->{
+			before("/*",(req, res) -> 	{
+				res.type("application/json");
+				res.header("Access-Control-Allow-Origin", "*");
+				res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+				res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+			});
+		});
 
-    	after("/api/*",(request, response) -> response.type("application/json"));
-    	after("/*",(request, response) -> response	.header("Access-Control-Allow-Origin", "*"));
-    	after("/api/get/*",(request, response) -> response	.header("Access-Control-Allow-Methods", "GET"));
-    	after("/*",(request, response) -> response	.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"));
-    	after("/api/post/*",(request, response) -> response.header("Access-Control-Allow-Methods", "POST, OPTIONS"));
-
-    	//セッション
-		before("/*", (req, res) -> {//リダイレクト->ログイン
+    	//セッション確認
+		before("/api/*", (req, res) -> {
+			//ログイン確認
+			if(req.session().attribute("usersId") == null){
+				halt(HttpStatus.UNAUTHORIZED);
+			}
 		});
 		
-		//ログイン
 
-		//データ
-		//取得
-		//ユーザデータ
-		get("/api/get/data/user", (req, res) -> {
-
-		});
-		//サマリー
-		get("/api/get/data/summary/top", (req, res) -> {});
-		//日データ
-		get("/api/get/data/day/:year/:month/:day", (req, res) -> {});
-		//月データ
-		get("/api/get/data/month/:year/:month", (req, res) -> {});
-		//年データ
-		get("/api/get/data/year/:year", (req, res) -> {});
-
-		//書込
-		//日データ
-		post("/api/post/data/day", (req, res) -> {});
-
-		//編集
-		//日データ
-		put("/api/put/data/day", (req, res) -> {});
-
-		//削除
-		//日データ
-		delete("/api/delete/data/day", (req, res) -> {});
     }
 }

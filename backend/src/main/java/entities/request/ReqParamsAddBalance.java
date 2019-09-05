@@ -7,17 +7,19 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class ReqParamsInsertDataDay {
-    private int usersId;
+public class ReqParamsAddBalance implements IRequestParameters {
+    private int balanceId;
+    private String usersId;
     private LocalDate dataDate;
     private long income;
     private long spending;
+    private int version;
 
     private List<String> tags;
 
-    public ReqParamsInsertDataDay(String reqBodyJson) throws Exception {
+    public ReqParamsAddBalance(String usersId, String reqBodyJson) throws Exception {
         JsonObject jb = new JsonParser().parse(reqBodyJson).getAsJsonObject();
-        this.usersId = jb.get("users_id").getAsInt();
+        this.usersId = usersId;
         this.dataDate = LocalDate.parse(jb.get("date").getAsString(), DateTimeFormatter.ofPattern("yyyy/MM/dd"));
         this.income = jb.get("income").getAsLong();
         this.spending = jb.get("spending").getAsLong();
@@ -25,7 +27,7 @@ public class ReqParamsInsertDataDay {
 
     }
 
-    public int getUsersId() {
+    public String getUsersId() {
         return usersId;
     }
 
@@ -43,5 +45,21 @@ public class ReqParamsInsertDataDay {
 
     public List<String> getTags() {
         return tags;
+    }
+
+    public void setBalanceId(int balanceId) {
+        this.balanceId = balanceId;
+    }
+
+    public void setVersion(final int version) {
+        this.version = version;
+    }
+
+    /**
+     * requestパラメータをチェック
+     * @return
+     */
+    public boolean validation(){
+        return true;
     }
 }

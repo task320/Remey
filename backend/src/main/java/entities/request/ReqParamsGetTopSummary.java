@@ -4,10 +4,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 
-public class ReqParamsGetDataTopSummary implements IRequestParameters{
+public class ReqParamsGetTopSummary implements IRequestParameters{
     private String usersId;
 
-    public ReqParamsGetDataTopSummary(String reqBodyJson) throws Exception {
+    public ReqParamsGetTopSummary(String reqBodyJson) throws Exception {
         JsonObject jb = new JsonParser().parse(reqBodyJson).getAsJsonObject();
         this.usersId = jb.get("users_id").getAsString();
     }

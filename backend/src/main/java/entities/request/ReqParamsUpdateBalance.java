@@ -5,25 +5,27 @@ import com.google.gson.JsonParser;
 
 import java.util.List;
 
-public class ReqParamsUpdateDataDay {
-    private int usersId;
+public class ReqParamsUpdateBalance implements IRequestParameters{
+    private String usersId;
     private int balanceId;
     private long income;
     private long spending;
     private List<String> tags;
+    private int version;
 
-    public ReqParamsUpdateDataDay(String reqBodyJson) {
+    public ReqParamsUpdateBalance(String usersId, String reqBodyJson) {
         JsonObject jb = new JsonParser().parse(reqBodyJson).getAsJsonObject();
-        usersId = jb.get("users_id").getAsInt();
+        this.usersId = usersId;
         balanceId = jb.get("balance_id").getAsInt();
         income = jb.get("income").getAsLong();
         spending = jb.get("spending").getAsLong();
         jb.getAsJsonArray("tags").forEach(tag -> {
             tags.add(tag.toString());
         });
+        version = jb.get("version").getAsInt();
     }
 
-    public int getUsersId() {
+    public String getUsersId() {
         return this.usersId;
     }
 
@@ -41,5 +43,21 @@ public class ReqParamsUpdateDataDay {
 
     public long getIncome() {
         return income;
+    }
+
+    public int getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(final int version) {
+        this.version = version;
+    }
+
+    /**
+     * requestパラメータをチェック
+     * @return
+     */
+    public boolean validation(){
+        return true;
     }
 }

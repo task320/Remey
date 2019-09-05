@@ -12,16 +12,13 @@ import org.jooq.impl.DSL;
 import constant.Env;
 import infrastructure.settings.yaml.object.Settings;
 
-public class JooqPostgresqlConnection implements IDBConnection {
-
-	Connection conn = null;
-	DSLContext create = null;
+public class JooqPostgresqlConnection extends DBConnection {
 
 	public JooqPostgresqlConnection(Settings settings) throws Exception{
-		initConnection(settings);
+		super(settings);
 	}
 
-	private void initConnection(Settings settings) throws Exception{
+	protected void initConnection(Settings settings) throws Exception{
 		try {
 			String env_mode = System.getenv(Env.APP_ENV_MODE);
 
@@ -56,16 +53,4 @@ public class JooqPostgresqlConnection implements IDBConnection {
 			throw e;
 		}
 	}
-
-	public void closeConnection() throws Exception{
-		if(conn != null){
-			try{
-				conn.close();
-			}
-			catch(Exception e){
-				throw e;
-			}
-		}
-	}
-
 }

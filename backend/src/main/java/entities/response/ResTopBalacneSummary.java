@@ -1,4 +1,4 @@
 package entities.response;
 
-public class ResDataTopSummary {
+public class ResTopBalacneSummary {
 }

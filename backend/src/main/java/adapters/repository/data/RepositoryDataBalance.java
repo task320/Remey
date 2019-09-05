@@ -1,11 +1,13 @@
 package adapters.repository.data;
 
 import adapters.repository.jooq.*;
+import adapters.repository.jooq.tables.records.BalanceRecord;
 import adapters.repository.jooq.tables.records.TagsRecord;
-import adapters.request.data.*;
+import entities.SummaryDayBalance;
+import entities.request.*;
 import exceptions.RepositoryException;
 import exceptions.SqlExecuteException;
-import infrastructure.connection.IDBConnection;
+import infrastructure.connection.DBConnection;
 import constant.ExceptionsMessage;
 
 import org.jooq.*;
@@ -13,26 +15,24 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.Instant;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 public class RepositoryDataBalance implements IRepositoryDataBalance {
-    IDBConnection connection;
-    Field formatDateCreateAt = DSL.field("date_format({0}, {1})", SQLDataType.DATE, Tables.BALANCE.CREATE_AT, DSL.inline("%Y/%m/%d")).as(Tables.BALANCE.CREATE_AT.getName());
-    Field DateCreateAt = DSL.field(Tables.BALANCE.CREATE_AT.getName(), SQLDataType.DATE);
+    DBConnection connection;
+    final static Field formatDateBalanceDate = DSL.field("date_format({0}, {1})", SQLDataType.DATE, Tables.BALANCE.BALANCE_DATE, DSL.inline("%Y/%m/%d")).as(Tables.BALANCE.BALANCE_DATE.getName());
+    final static Field DateCreateAt = DSL.field(Tables.BALANCE.CREATE_AT.getName(), SQLDataType.DATE);
     private final int INITIAL_VERSION = 0;
 
     /**
      *
      * @param connection
      */
-    public RepositoryDataBalance(IDBConnection connection){
+    public RepositoryDataBalance(DBConnection connection){
         this.connection = connection;
     }
 
@@ -41,22 +41,21 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
      * @param params データ取得に必要なパラメータ
      * @return 日の支出データ
      */
-    public List<entities.Balance> getDataDayRecords(ReqParamsGetDataDay params){
-        Result<Record> result = connection.create
+    public List<entities.Balance> getDataDayRecords(ReqParamsGetBalanceDay params){
+        Result<BalanceRecord> result = connection.create
                 .select()
                 .from(Tables.BALANCE)
-                .where(Tables.BALANCE.CREATE_AT.ge(params.getDataDateAtTimestamp()))
-                .and(Tables.BALANCE.CREATE_AT.lt(params.getDataDatePlusADayAtTimestamp()))
+                .where(Tables.BALANCE.BALANCE_DATE.eq(params.getDataDateAtDate()))
                 .and(Tables.BALANCE.USERS_ID.eq(params.getUsersId()))
-                .fetch();
+                .fetchInto(Tables.BALANCE);
 
         List<entities.Balance> dayRecords = new LinkedList<>();
 
         result.forEach(rec -> {
-            int id = rec.getValue(Tables.BALANCE.ID.getName(),Integer.TYPE);
-            long income = rec.getValue(Tables.BALANCE.INCOME.getName(),long.class);
-            long spending = rec.getValue(Tables.BALANCE.SPENDING.getName(),long.class);
-            int version = rec.getValue(Tables.BALANCE.VERSION.getName(),Integer.TYPE);
+            int id = rec.getId();
+            long income = rec.getIncome();
+            long spending = rec.getSpending();
+            int version = rec.getVersion();
             List<String> tags = getBalanceTagsById(id);
 
             dayRecords.add(new entities.Balance(id, income, spending, version));
@@ -64,7 +63,6 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
         });
 
         return dayRecords;
-
     }
 
     /**
@@ -72,18 +70,17 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
      * @param params　データ取得に必要なパラメータ
      * @return 日の支出合計データ
      */
-    public entities.SummaryDayBalance getDataDaySummaryRecords(ReqParamsGetDataDay params){
+    public SummaryDayBalance getDataDaySummaryRecords(ReqParamsGetBalanceDay params){
         Record2<BigDecimal, BigDecimal> result =
                 connection.create
                 .select(DSL.sum(Tables.BALANCE.INCOME).as(Tables.BALANCE.INCOME.getName()), DSL.sum(Tables.BALANCE.SPENDING).as(Tables.BALANCE.SPENDING.getName()))
                 .from(Tables.BALANCE)
-                .where(Tables.BALANCE.CREATE_AT.ge(params.getDataDateAtTimestamp()))
-                .and(Tables.BALANCE.CREATE_AT.lt(params.getDataDatePlusADayAtTimestamp()))
+                .where(Tables.BALANCE.BALANCE_DATE.ge(params.getDataDateAtDate()))
                 .and(Tables.BALANCE.USERS_ID.eq(params.getUsersId()))
                 .groupBy(Tables.BALANCE.INCOME, Tables.BALANCE.SPENDING)
                 .fetchOne();
 
-        return new entities.SummaryDayBalance(
+        return new SummaryDayBalance(
                 params.getDataDate(),
                 result.getValue(Tables.BALANCE.INCOME.getName(), long.class),
                 result.getValue(Tables.BALANCE.SPENDING.getName(), long.class)
@@ -95,19 +92,19 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
      * @param params データ取得に必要なパラメータ
      * @return 月の収支データ
      */
-    public List<entities.SummaryDayBalance> getDataMonthRecords(ReqParamsGetDataMonth params){
-        Result<Record3<BigDecimal, BigDecimal, Timestamp>> result = connection.create
+    public List<entities.SummaryDayBalance> getDataMonthRecords(ReqParamsGetBalanceMonth params){
+        Result<Record3<BigDecimal, BigDecimal, Date>> result = connection.create
                 .select(Tables.BALANCE.INCOME, Tables.BALANCE.SPENDING, DateCreateAt)
                 .from(
                         connection.create
                                 .select(
                                         Tables.BALANCE.INCOME,
                                         Tables.BALANCE.SPENDING,
-                                        formatDateCreateAt
+                                        formatDateBalanceDate
                                 )
                                 .from(Tables.BALANCE)
-                                .where(Tables.BALANCE.CREATE_AT.ge(params.getDataDateAtTimestamp()))
-                                .and(Tables.BALANCE.CREATE_AT.lt(params.getDataDatePlusAMonthAtTimestamp()))
+                                .where(Tables.BALANCE.BALANCE_DATE.ge(params.getDataDateAtDate()))
+                                .and(Tables.BALANCE.BALANCE_DATE.lt(params.getDataDatePlusAMonthAtDate()))
                                 .and(Tables.BALANCE.USERS_ID.eq(params.getUsersId()))
                 )
                 .groupBy(DateCreateAt)
@@ -117,8 +114,8 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
         List<entities.SummaryDayBalance> monthRecords = new LinkedList<>();
 
         result.forEach(rec -> {
-            Instant InstantCreateAt = rec.getValue(Tables.BALANCE.CREATE_AT.getName(), Date.class).toInstant();
-            LocalDate date = LocalDate.ofInstant(InstantCreateAt, ZoneId.systemDefault());
+            Date balanceDate = rec.getValue(Tables.BALANCE.BALANCE_DATE.getName(), Date.class);
+            LocalDate date = LocalDate.of(balanceDate.getYear(), balanceDate.getMonth(), balanceDate.getDay());
             long income = rec.getValue(Tables.BALANCE.INCOME.getName(), long.class);
             long spending = rec.getValue(Tables.BALANCE.SPENDING.getName(),long.class);
 
@@ -135,13 +132,13 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
      * @param params データ取得に必要なパラメータ
      * @return 月の収支合計データ
      */
-    public entities.SummaryMonthBalance getDataMonthSummaryRecords(ReqParamsGetDataMonth params){
+    public entities.SummaryMonthBalance getDataMonthSummaryRecords(ReqParamsGetBalanceMonth params){
         Record2<BigDecimal, BigDecimal> result =
                 connection.create
                         .select(DSL.sum(Tables.BALANCE.INCOME).as(Tables.BALANCE.INCOME.getName()), DSL.sum(Tables.BALANCE.SPENDING).as(Tables.BALANCE.SPENDING.getName()))
                         .from(Tables.BALANCE)
-                        .where(Tables.BALANCE.CREATE_AT.ge(params.getDataDateAtTimestamp()))
-                        .and(Tables.BALANCE.CREATE_AT.lt(params.getDataDatePlusAMonthAtTimestamp()))
+                        .where(Tables.BALANCE.BALANCE_DATE.ge(params.getDataDateAtDate()))
+                        .and(Tables.BALANCE.BALANCE_DATE.lt(params.getDataDatePlusAMonthAtDate()))
                         .and(Tables.BALANCE.USERS_ID.eq(params.getUsersId()))
                         .groupBy(Tables.BALANCE.INCOME, Tables.BALANCE.SPENDING)
                         .fetchOne();
@@ -158,7 +155,7 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
      * @param params データ取得に必要なパラメータ
      * @return 月の収支合計データ
      */
-    public List<entities.SummaryMonthBalance> getDataYearRecords(ReqParamsGetDataYear params){
+    public List<entities.SummaryMonthBalance> getDataYearRecords(ReqParamsGetBalanceYear params){
         Result<Record3<Long, Long, Date>> result = connection.create
                 .select(Tables.BALANCE.INCOME, Tables.BALANCE.SPENDING, DateCreateAt)
                 .from(
@@ -166,11 +163,11 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
                                 .select(
                                         Tables.BALANCE.INCOME,
                                         Tables.BALANCE.SPENDING,
-                                        formatDateCreateAt
+                                        formatDateBalanceDate
                                 )
                                 .from(Tables.BALANCE)
-                                .where(Tables.BALANCE.CREATE_AT.ge(params.getDataDateAtTimestamp()))
-                                .and(Tables.BALANCE.CREATE_AT.lt(params.getDataDatePlusAYearAtTimestamp()))
+                                .where(Tables.BALANCE.BALANCE_DATE.ge(params.getDataDateAtDate()))
+                                .and(Tables.BALANCE.BALANCE_DATE.lt(params.getDataDatePlusAYearAtDate()))
                                 .and(Tables.BALANCE.USERS_ID.eq(params.getUsersId()))
                 )
                 .groupBy(DateCreateAt)
@@ -180,8 +177,8 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
         List<entities.SummaryMonthBalance> yearRecords = new LinkedList<>();
 
         result.forEach(rec -> {
-            Instant InstantCreateAt = rec.getValue(Tables.BALANCE.CREATE_AT.getName(), Date.class).toInstant();
-            LocalDate date = LocalDate.ofInstant(InstantCreateAt, ZoneId.systemDefault());
+            Date balanceDate = rec.getValue(Tables.BALANCE.CREATE_AT.getName(), Date.class);
+            LocalDate date = LocalDate.of(balanceDate.getYear(), balanceDate.getMonth(), balanceDate.getDay());
             long income = rec.getValue(Tables.BALANCE.INCOME.getName(),long.class);
             long spending = rec.getValue(Tables.BALANCE.SPENDING.getName(),long.class);
 
@@ -196,13 +193,13 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
      * @param params
      * @return
      */
-    public entities.SummaryYearBalance getDataYearSummaryRecords(ReqParamsGetDataYear params){
+    public entities.SummaryYearBalance getDataYearSummaryRecords(ReqParamsGetBalanceYear params){
         Record2<BigDecimal, BigDecimal> result =
                 connection.create
                         .select(DSL.sum(Tables.BALANCE.INCOME).as(Tables.BALANCE.INCOME.getName()), DSL.sum(Tables.BALANCE.SPENDING).as(Tables.BALANCE.SPENDING.getName()))
                         .from(Tables.BALANCE)
-                        .where(Tables.BALANCE.CREATE_AT.ge(params.getDataDateAtTimestamp()))
-                        .and(Tables.BALANCE.CREATE_AT.lt(params.getDataDatePlusAYearAtTimestamp()))
+                        .where(Tables.BALANCE.BALANCE_DATE.ge(params.getDataDateAtDate()))
+                        .and(Tables.BALANCE.BALANCE_DATE.lt(params.getDataDatePlusAYearAtDate()))
                         .and(Tables.BALANCE.USERS_ID.eq(params.getUsersId()))
                         .groupBy(Tables.BALANCE.INCOME, Tables.BALANCE.SPENDING)
                         .fetchOne();
@@ -218,16 +215,17 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
      * 収支データを登録
      * @param params 収支データ
      */
-    public void insertDataDay(ReqParamsInsertDataDay params){
+    public void addBalance(ReqParamsAddBalance params){
         connection.create.transaction(transaction ->{
             try {
                 DSLContext ctx = DSL.using(transaction);
-                Record1<Integer> insertResult =  ctx.insertInto(
+                BalanceRecord insertResult =  ctx.insertInto(
                         Tables.BALANCE,
                         Tables.BALANCE.USERS_ID,
                         Tables.BALANCE.INCOME,
                         Tables.BALANCE.SPENDING,
                         Tables.BALANCE.VERSION,
+                        Tables.BALANCE.BALANCE_DATE,
                         Tables.BALANCE.CREATE_AT,
                         Tables.BALANCE.UPDATE_AT).
                         values(
@@ -235,14 +233,20 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
                                 params.getIncome(),
                                 params.getSpending(),
                                 INITIAL_VERSION,
+                                Date.valueOf(params.getDataDate()),
                                 Timestamp.valueOf(LocalDateTime.now()),
                                 Timestamp.valueOf(LocalDateTime.now())).
-                        returningResult(Tables.BALANCE.ID).
+                        returning(Tables.BALANCE.ID, Tables.BALANCE.VERSION).
                         fetchOne();
 
-                int balnaceId = insertResult.getValue(Tables.BALANCE.ID, int.class);
+                int balnaceId = insertResult.getId();
 
                 insertTags(ctx, params.getUsersId(), balnaceId, params.getTags());
+
+                //フロント返却用にセット
+                params.setBalanceId(balnaceId);
+
+
             }catch(Exception e){
                 throw new SqlExecuteException(e);
             }
@@ -256,14 +260,14 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
      * 収支データの更新
      * @param params 更新データ
      */
-    public void updateDataDay(ReqParamsUpdateDataDay params){
+    public void updateBalance(ReqParamsUpdateBalance params){
         connection.create.transaction(transaction -> {
             try {
                 DSLContext ctx = DSL.using(transaction);
 
                 insertTags(ctx, params.getUsersId(), params.getBalanceId(), params.getTags());
 
-                int updateCount = ctx.
+                BalanceRecord record = ctx.
                         update(Tables.BALANCE).
                         set(Tables.BALANCE.INCOME, params.getIncome()).
                         set(Tables.BALANCE.SPENDING, params.getSpending()).
@@ -271,11 +275,17 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
                         set(Tables.BALANCE.UPDATE_AT, Timestamp.valueOf(LocalDateTime.now())).
                         where(Tables.BALANCE.USERS_ID.eq(params.getUsersId())).
                         and(Tables.BALANCE.ID.eq(params.getBalanceId())).
-                        execute();
+                        and(Tables.BALANCE.VERSION.le(params.getVersion())).
+                        returning(Tables.BALANCE.VERSION).
+                        fetchOne();
 
-                if (updateCount != 1) {
+                if (record.getVersion() != null) {
                     throw new SqlExecuteException(ExceptionsMessage.FAILED_SQL_UPDATE);
                 }
+
+                //フロント返却用にセット
+                params.setVersion(record.getVersion());
+
             } catch (Exception e) {
                 throw new RepositoryException(e);
             }
@@ -286,7 +296,7 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
      * 収支データの削除
      * @param params 削除に必要なパラメータ
      */
-    public void deleteDataDay(ReqParamsDeleteDataDay params){
+    public void deleteBalance(ReqParamsDeleteBalance params){
         connection.create.transaction(transaction -> {
             try {
                 int deleteCount;
@@ -302,8 +312,8 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
                 }
 
                 deleteCount = ctx.
-                        deleteFrom(Tables.BALANCE).
-                        where(Tables.BALANCE.ID.eq(params.getBalanceId())).
+                        deleteFrom(Tables.TAGS_MAP).
+                        where(Tables.TAGS_MAP.BALANCE_ID.eq(params.getBalanceId())).
                         execute();
 
                 if (deleteCount >= 1) {
@@ -346,7 +356,7 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
      * @param balanceId 収支ID
      * @param tags 登録するタグ
      */
-    private void insertTags(DSLContext ctx, int userId, int balanceId, List<String> tags){
+    private void insertTags(DSLContext ctx, String userId, int balanceId, List<String> tags){
 
         ctx.deleteFrom(Tables.TAGS_MAP).where(Tables.TAGS_MAP.BALANCE_ID.eq(balanceId));
 

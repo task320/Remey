@@ -1,9 +1,9 @@
-package adapters.request.data;
+package entities.request;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class ReqParamsGetDataUser {
+public class ReqParamsGetDataUser implements IRequestParameters{
     private String usersId;
 
     public ReqParamsGetDataUser(String reqBodyJson) throws Exception {
@@ -15,4 +15,11 @@ public class ReqParamsGetDataUser {
         return this.usersId;
     }
 
+    /**
+     * requestパラメータをチェック
+     * @return
+     */
+    public boolean validation(){
+        return true;
+    }
 }

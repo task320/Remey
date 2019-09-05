@@ -3,22 +3,30 @@ package entities.request;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class ReqParamsDeleteDataDay {
-    private int usersId;
+public class ReqParamsDeleteBalance implements IRequestParameters{
+    private String usersId;
     private int balanceId;
 
-    public ReqParamsDeleteDataDay(String reqBodyJson) {
+    public ReqParamsDeleteBalance(String usersId, String reqBodyJson) {
         JsonObject jb = new JsonParser().parse(reqBodyJson).getAsJsonObject();
-        usersId = jb.get("users_id").getAsInt();
+        this.usersId = usersId;
         balanceId = jb.get("balance_id").getAsInt();
 
     }
 
-    public int getUsersId() {
+    public String getUsersId() {
         return this.usersId;
     }
 
     public int getBalanceId() {
         return this.balanceId;
+    }
+
+    /**
+     * requestパラメータをチェック
+     * @return
+     */
+    public boolean validation(){
+        return true;
     }
 }

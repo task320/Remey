@@ -5,7 +5,7 @@ import entities.SummaryDayBalance;
 
 import java.util.List;
 
-public class ResDataDay {
+public class ResDataBalnaceDay {
     //日データの取得
     List<Balance> balances;
     //日データのサマリー
@@ -16,7 +16,7 @@ public class ResDataDay {
      * @param balances 日収支データ
      * @param summary 日収支合計
      */
-    public ResDataDay(List<Balance> balances, SummaryDayBalance summary) {
+    public ResDataBalnaceDay(List<Balance> balances, SummaryDayBalance summary) {
         this.balances = balances;
         this.summary = summary;
     }

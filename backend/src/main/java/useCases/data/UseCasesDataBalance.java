@@ -2,68 +2,104 @@ package useCases.data;
 
 
 import adapters.repository.data.IRepositoryDataBalance;
-import adapters.request.data.ReqParamsGetDataDay;
-import adapters.request.data.ReqParamsGetDataMonth;
-import adapters.request.data.ReqParamsGetDataYear;
-import adapters.request.data.ReqParamsInsertDataDay;
+import entities.request.*;
 import entities.Balance;
 import entities.SummaryDayBalance;
 import entities.SummaryMonthBalance;
 import entities.SummaryYearBalance;
+import entities.response.ResDataBalnaceDay;
+import entities.response.ResDataBalanceMonth;
+import entities.response.ResDataBalanceYear;
 
 import java.util.List;
 
+/**
+ * 収支ユースケース
+ */
 public class UseCasesDataBalance {
 	private IRepositoryDataBalance repository;
 
+	/**
+	 * コンストラクタ
+	 * @param repository
+	 */
 	public UseCasesDataBalance(IRepositoryDataBalance repository){
 		this.repository = repository;
 	}
 
-	//日表示用データ取得
-	public String getDataDay(ReqParamsGetDataDay params){
+	/**
+	 * 日表示用データ取得
+	 * @param params
+	 * @return
+	 */
+	public ResDataBalnaceDay getDataDay(ReqParamsGetBalanceDay params){
 		//日データの取得
 		List<Balance> balances = repository.getDataDayRecords(params);
 		//日データのサマリー
 		SummaryDayBalance summary = repository.getDataDaySummaryRecords(params);
-		//返すデータのセットを作成し、返す
-		return "";
+
+		//表示用データ
+		ResDataBalnaceDay response = new ResDataBalnaceDay(balances, summary);
+
+		return response;
 	}
 
-	//月表示用データ取得
-	public String getDataMonth(ReqParamsGetDataMonth params){
+
+	/**
+	 * 月表示用データ取得
+	 * @param params
+	 * @return
+	 */
+	public ResDataBalanceMonth getDataMonth(ReqParamsGetBalanceMonth params){
 		//月データの取得
 		List<SummaryDayBalance> balances = repository.getDataMonthRecords(params);
 		//月データのサマリー
 		SummaryMonthBalance summary  = repository.getDataMonthSummaryRecords(params);
 
-		return "";
+		//表示用データ
+		ResDataBalanceMonth response = new ResDataBalanceMonth(balances, summary);
+
+		return response;
 	}
 
-	//年表示用データ取得
-	public String getDataYear(ReqParamsGetDataYear params){
+	/**sit
+	 * 年表示用データ取得
+	 * @param params
+	 * @return
+	 */
+	public ResDataBalanceYear getDataYear(ReqParamsGetBalanceYear params){
 		//月データの取得
 		List<SummaryMonthBalance> balances = repository.getDataYearRecords(params);
 		//月データのサマリー
 		SummaryYearBalance summary  = repository.getDataYearSummaryRecords(params);
-		return "";
+
+		//表示用データ
+		ResDataBalanceYear response = new ResDataBalanceYear(balances, summary);
+
+		return response;
 	}
 
-	//データ登録
-	public boolean resultAddDataDayRecord(ReqParamsInsertDataDay param) {
-		//収入・支出データ登録
-		repository.insertDataDay(param);
-
-		return true;
+	/**
+	 * 収支データ登録
+	 * @param params
+	 */
+	public void addBalance(ReqParamsAddBalance params) {
+		repository.addBalance(params);
 	}
 
-	//データ更新
-	public boolean resultUpdateDataDayRecord(String id){
-		return true;
+	/**
+	 * 収支データ更新
+	 * @param params
+	 */
+	public void updateBalance(ReqParamsUpdateBalance params){
+		repository.updateBalance(params);
 	}
 
-	//データ削除
-	public boolean resultDeleteDataDayRecordString(String id){
-		return true;
+	/**
+	 * 収支データ削除
+	 * @param params
+	 */
+	public void deleteBalance(ReqParamsDeleteBalance params){
+		repository.deleteBalance(params);
 	}
 }

@@ -4,15 +4,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import operator.converter.ConverterDateAndTime;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class ReqParamsGetDataYear implements IRequestParameters{
+public class ReqParamsGetBalanceYear implements IRequestParameters{
     private String usersId;
     private LocalDate dataDate;
 
-    public ReqParamsGetDataYear(String usersId, String reqBodyJson) throws Exception {
+    public ReqParamsGetBalanceYear(String usersId, String reqBodyJson) throws Exception {
         JsonObject jb = new JsonParser().parse(reqBodyJson).getAsJsonObject();
         this.usersId = usersId;
         dataDate = LocalDate.parse(jb.get("date").getAsString(), DateTimeFormatter.ofPattern("yyyy/MM/dd"));
@@ -26,12 +27,12 @@ public class ReqParamsGetDataYear implements IRequestParameters{
         return dataDate;
     }
 
-    public Timestamp getDataDateAtTimestamp(){
-        return ConverterDateAndTime.LocalDateToTimestamp(dataDate);
+    public Date getDataDateAtDate(){
+        return ConverterDateAndTime.LocalDateToDate(dataDate);
     }
 
-    public Timestamp getDataDatePlusAYearAtTimestamp(){
-        return ConverterDateAndTime.LocalDateToTimestamp(dataDate.plusYears(1L));
+    public Date getDataDatePlusAYearAtDate(){
+        return ConverterDateAndTime.LocalDateToDate(dataDate.plusYears(1L));
     }
 
     /**

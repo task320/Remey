@@ -7,12 +7,13 @@ import operator.converter.ConverterDateAndTime;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.sql.Date;
 
-public class ReqParamsGetDataDay implements IRequestParameters{
+public class ReqParamsGetBalanceDay implements IRequestParameters{
     private String usersId;
     private LocalDate dataDate;
 
-    public ReqParamsGetDataDay(String usersId, String reqBodyJson) throws Exception {
+    public ReqParamsGetBalanceDay(String usersId, String reqBodyJson) throws Exception {
         JsonObject jb = new JsonParser().parse(reqBodyJson).getAsJsonObject();
         this.usersId = usersId;
         this.dataDate = LocalDate.parse(jb.get("date").getAsString(), DateTimeFormatter.ofPattern("yyyy/MM/dd"));
@@ -26,12 +27,8 @@ public class ReqParamsGetDataDay implements IRequestParameters{
         return this.dataDate;
     }
 
-    public Timestamp getDataDateAtTimestamp(){
-        return ConverterDateAndTime.LocalDateToTimestamp(dataDate);
-    }
-
-    public Timestamp getDataDatePlusADayAtTimestamp(){
-        return ConverterDateAndTime.LocalDateToTimestamp(dataDate.plusDays(1L));
+    public Date getDataDateAtDate(){
+        return ConverterDateAndTime.LocalDateToDate(dataDate);
     }
 
     /**

@@ -8,6 +8,7 @@ import java.util.Collection;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
@@ -18,21 +19,22 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import constant.StatusResponse;
-import settings.SettingReader;
-import settings.yaml.object.Settings;
+import constant.HttpStatus;
+import constant.ResponseMessage;
+import infrastructure.settings.SettingReader;
+import infrastructure.settings.yaml.object.Settings;
 import spark.Request;
 import spark.Response;
-import structure.GoogleUserInfo;
-import structure.StandardResponse;
+
+import static spark.Spark.halt;
 
 public class OAuth2Google {
 
-	private static final Collection<String> SCOPES = Arrays.asList("email", "profile");
+	private static final Collection<String> SCOPES = Arrays.asList("email");
 	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 	private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 
-	public static String oath2Redirect(Request req, Response res) throws Exception{
+	public static void oath2Redirect(Request req, Response res) throws Exception{
 		try{
 			String state = new BigInteger(130, new SecureRandom()).toString(32);
 
@@ -53,13 +55,13 @@ public class OAuth2Google {
 					.build();
 
 			res.redirect(url);
-    		return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
+
 		}catch(Exception e){
-			return new Gson().toJson(new StandardResponse(StatusResponse.ERROR));
+			halt(HttpStatus.INTERNAL_SERVER_ERROR, ResponseMessage.INTERNAL_SERVER_ERROR_MESSAGE);
 		}
 	}
 
-	public static GoogleUserInfo getUserInfo(Request req, Response res){
+	public static GoogleUserInfo loginProc(Request req, Response res){
 		try{
     		//認証確認
     		if(req.session().attribute("state") == null
@@ -80,7 +82,9 @@ public class OAuth2Google {
 												.setRedirectUri(settings.getAuthSettings().getCallback())
 												.execute();
 
+
 			Credential credential = flow.createAndStoreCredential(tokenResponse, null);
+
 			HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory(credential);
 
 			GenericUrl url = new GenericUrl(settings.getAuthSettings().getUserInfoEndPoint());
@@ -97,5 +101,12 @@ public class OAuth2Google {
 				e.printStackTrace();
 				return null;
 			}
+	}
+
+	public static void validationAccessToken(String accessToken){
+		GoogleCredential credential = new GoogleCredential().setAccessToken(accessToken);
+
+
+
 	}
 }
