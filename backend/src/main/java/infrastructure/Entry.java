@@ -11,15 +11,15 @@ import infrastructure.settings.yaml.object.Settings;
 public class Entry {
     public static void main(String[] args) {
 		Settings settings = null;
-		DBConnection connection = null;
 
+		//設定読み込み
 		try {
 			settings = SettingReader.getSettings();
-			connection = new JooqPostgresqlConnection(settings);
 		}catch (Exception e){
 			return;
 		}
-/**
+
+        //CORS対策
     	options("/api/*",
     	        (request, response) -> {
 
@@ -39,7 +39,8 @@ public class Entry {
 
     	            return "OK";
     	        });
-**/
+
+
     	path("/api", () ->{
 			before("/*",(req, res) -> 	{
 				res.type("application/json");
@@ -56,7 +57,8 @@ public class Entry {
 				halt(HttpStatus.UNAUTHORIZED);
 			}
 		});
-		
 
+		//ルート設定
+		ApiRoutes.setRoute(settings);
     }
 }

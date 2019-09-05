@@ -2,84 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ef8e251e-ff96-4c44-94a3-f28c57f478cc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/constant/ExceptionsMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/response/ResDataBalanceMonth.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/response/ResDataBalanceYear.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/response/ResDataBalnaceDay.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/exceptions/RepositoryException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/controller/data/ControllerDataBalance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/adapters/controller/data/ControllerDataBalance.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/adapters/controller/login/OAuth2Google.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/adapters/controller/login/OAuth2Google.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/data/IRepositoryDataBalance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/adapters/repository/data/IRepositoryDataBalance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/data/RepositoryDataBalance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/adapters/repository/data/RepositoryDataBalance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/DefaultCatalog.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/Indexes.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/Keys.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/Remey.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/Routines.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/Sequences.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/Tables.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/routines/UuidGenerateV1.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/routines/UuidGenerateV1mc.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/routines/UuidGenerateV3.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/routines/UuidGenerateV4.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/routines/UuidGenerateV5.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/routines/UuidNil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/routines/UuidNsDns.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/routines/UuidNsOid.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/routines/UuidNsUrl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/routines/UuidNsX500.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/Balance.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/Tags.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/TagsMap.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/UserSettings.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/Users.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/daos/BalanceDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/daos/TagsDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/daos/TagsMapDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/daos/UserSettingsDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/daos/UsersDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/pojos/Balance.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/pojos/Tags.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/pojos/TagsMap.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/pojos/UserSettings.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/pojos/Users.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/records/BalanceRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/records/TagsMapRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/records/TagsRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/records/UserSettingsRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/repository/jooq/tables/records/UsersRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/request/data/ReqParamsDeleteDataDay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/request/ReqParamsDeleteBalance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/request/data/ReqParamsGetDataDay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/request/ReqParamsGetBalanceDay.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/request/data/ReqParamsGetDataMonth.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/request/ReqParamsGetBalanceMonth.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/request/data/ReqParamsGetDataTopSummary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/request/ReqParamsGetTopSummary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/request/data/ReqParamsGetDataUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/request/ReqParamsGetDataUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/request/data/ReqParamsGetDataYear.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/request/ReqParamsGetBalanceYear.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/request/data/ReqParamsInsertDataDay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/request/ReqParamsAddBalance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/adapters/request/data/ReqParamsUpdateDataDay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/request/ReqParamsUpdateBalance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constant/HttpStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constant/HttpStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/constant/StatusResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ResDataDay.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ResDataMonth.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ResDataTopSummary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/response/ResTopBalacneSummary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ResDataUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/response/ResDataUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ResDataYear.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ResProcDataDay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/response/ResProcDataDay.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/exceptions/sql/SqlExecuteException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/exceptions/SqlExecuteException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/infrastructure/ApiRoutes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/infrastructure/ApiRoutes.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/infrastructure/Entry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/infrastructure/Entry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/infrastructure/connection/IDBConnection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/infrastructure/connection/JooqPostgresqlConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/infrastructure/connection/JooqPostgresqlConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/operator/converter/ConverterDateAndTime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/operator/converter/ConverterDateAndTime.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/operator/converter/ConverterJson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/operator/converter/ConverterJson.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/useCases/data/UseCasesDataBalance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/useCases/data/UseCasesDataBalance.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

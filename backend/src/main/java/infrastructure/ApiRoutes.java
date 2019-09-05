@@ -2,13 +2,23 @@ package infrastructure;
 
 import adapters.controller.data.ControllerDataBalance;
 import constant.ResponseMessage;
-import entities.response.ResDataBalnaceDay;
 import infrastructure.connection.DBConnection;
+import infrastructure.connection.JooqPostgresqlConnection;
+import infrastructure.settings.SettingReader;
+import infrastructure.settings.yaml.object.Settings;
 
 import static spark.Spark.*;
 
 public class ApiRoutes {
-    public static void setRoute(DBConnection connection) {
+    public static void setRoute(Settings settings) {
+
+        DBConnection connection = null;
+
+        try {
+            connection = new JooqPostgresqlConnection(settings);
+        }catch (Exception e){
+            return;
+        }
 
         ControllerDataBalance  controllerDataBalance = new ControllerDataBalance(connection);
         //ログイン

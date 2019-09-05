@@ -61,15 +61,15 @@ public class OAuth2Google {
 		}
 	}
 
-	public static GoogleUserInfo loginProc(Request req, Response res){
+	public static void loginProc(Request req, Response res){
 		try{
     		//認証確認
     		if(req.session().attribute("state") == null
     				|| !req.queryParams("state").equals((String)req.session().attribute("state"))){
-    					return null;
+				halt(HttpStatus.INTERNAL_SERVER_ERROR, ResponseMessage.INTERNAL_SERVER_ERROR_MESSAGE);
     		}
     		req.session().removeAttribute("state");
-
+/*
 			Settings settings = SettingReader.getSettings();
 			GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
 					 HTTP_TRANSPORT,
@@ -97,16 +97,9 @@ public class OAuth2Google {
 			GoogleUserInfo info = gson.fromJson(jsonIdentity, GoogleUserInfo.class);
 
 				return info;
-			}catch(Exception e){
-				e.printStackTrace();
-				return null;
-			}
-	}
-
-	public static void validationAccessToken(String accessToken){
-		GoogleCredential credential = new GoogleCredential().setAccessToken(accessToken);
-
-
-
+*/
+		}catch(Exception e){
+			halt(HttpStatus.INTERNAL_SERVER_ERROR, ResponseMessage.INTERNAL_SERVER_ERROR_MESSAGE);
+		}
 	}
 }
