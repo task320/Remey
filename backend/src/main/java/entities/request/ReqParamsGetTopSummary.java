@@ -1,10 +1,10 @@
-package adapters.request.data;
+package entities.request;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 
-public class ReqParamsGetDataTopSummary {
+public class ReqParamsGetDataTopSummary implements IRequestParameters{
     private String usersId;
 
     public ReqParamsGetDataTopSummary(String reqBodyJson) throws Exception {
@@ -14,5 +14,13 @@ public class ReqParamsGetDataTopSummary {
 
     public String getUsersId() {
         return this.usersId;
+    }
+
+    /**
+     * requestパラメータをチェック
+     * @return
+     */
+    public boolean validation(){
+        return true;
     }
 }

@@ -1,26 +1,24 @@
-package adapters.request.data;
+package entities.request;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import operator.converter.ConverterDateAndTime;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
-public class ReqParamsGetDataYear {
-    private int usersId;
+public class ReqParamsGetDataYear implements IRequestParameters{
+    private String usersId;
     private LocalDate dataDate;
 
-    public ReqParamsGetDataYear(String reqBodyJson) throws Exception {
+    public ReqParamsGetDataYear(String usersId, String reqBodyJson) throws Exception {
         JsonObject jb = new JsonParser().parse(reqBodyJson).getAsJsonObject();
-        usersId = jb.get("users_id").getAsInt();
+        this.usersId = usersId;
         dataDate = LocalDate.parse(jb.get("date").getAsString(), DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
 
-    public int getUsersId() {
+    public String getUsersId() {
         return usersId;
     }
 
@@ -34,5 +32,13 @@ public class ReqParamsGetDataYear {
 
     public Timestamp getDataDatePlusAYearAtTimestamp(){
         return ConverterDateAndTime.LocalDateToTimestamp(dataDate.plusYears(1L));
+    }
+
+    /**
+     * requestパラメータをチェック
+     * @return
+     */
+    public boolean validation(){
+        return true;
     }
 }

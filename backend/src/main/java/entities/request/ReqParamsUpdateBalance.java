@@ -1,10 +1,8 @@
-package adapters.request.data;
+package entities.request;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class ReqParamsUpdateDataDay {

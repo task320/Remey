@@ -1,9 +1,8 @@
-package adapters.request.data;
+package entities.request;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -13,6 +12,7 @@ public class ReqParamsInsertDataDay {
     private LocalDate dataDate;
     private long income;
     private long spending;
+
     private List<String> tags;
 
     public ReqParamsInsertDataDay(String reqBodyJson) throws Exception {
@@ -26,18 +26,22 @@ public class ReqParamsInsertDataDay {
     }
 
     public int getUsersId() {
-        return this.usersId;
+        return usersId;
     }
 
     public LocalDate getDataDate() {
-        return this.dataDate;
+        return dataDate;
     }
 
     public long getIncome() {
-        return this.income;
+        return income;
     }
 
     public long getSpending() {
-        return this.spending;
+        return spending;
+    }
+
+    public List<String> getTags() {
+        return tags;
     }
 }

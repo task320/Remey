@@ -1,26 +1,24 @@
-package adapters.request.data;
+package entities.request;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import operator.converter.ConverterDateAndTime;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
-public class ReqParamsGetDataMonth {
-    private int usersId;
+public class ReqParamsGetDataDay implements IRequestParameters{
+    private String usersId;
     private LocalDate dataDate;
 
-    public ReqParamsGetDataMonth(String reqBodyJson) throws Exception {
+    public ReqParamsGetDataDay(String usersId, String reqBodyJson) throws Exception {
         JsonObject jb = new JsonParser().parse(reqBodyJson).getAsJsonObject();
-        this.usersId = jb.get("users_id").getAsInt();
+        this.usersId = usersId;
         this.dataDate = LocalDate.parse(jb.get("date").getAsString(), DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
 
-    public int getUsersId() {
+    public String getUsersId() {
         return this.usersId;
     }
 
@@ -32,7 +30,15 @@ public class ReqParamsGetDataMonth {
         return ConverterDateAndTime.LocalDateToTimestamp(dataDate);
     }
 
-    public Timestamp getDataDatePlusAMonthAtTimestamp(){
-        return ConverterDateAndTime.LocalDateToTimestamp(dataDate.plusMonths(1L));
+    public Timestamp getDataDatePlusADayAtTimestamp(){
+        return ConverterDateAndTime.LocalDateToTimestamp(dataDate.plusDays(1L));
+    }
+
+    /**
+     * requestパラメータをチェック
+     * @return
+     */
+    public boolean validation(){
+        return true;
     }
 }

@@ -1,4 +1,4 @@
-package entities;
+package entities.response;
 
 public class ResDataTopSummary {
 }

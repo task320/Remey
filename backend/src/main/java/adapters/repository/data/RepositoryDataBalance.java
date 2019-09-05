@@ -1,15 +1,16 @@
 package adapters.repository.data;
 
 import adapters.repository.jooq.*;
-import adapters.repository.jooq.tables.records.BalanceRecord;
 import adapters.repository.jooq.tables.records.TagsRecord;
 import adapters.request.data.*;
-import exceptions.sql.SqlExecuteException;
+import exceptions.RepositoryException;
+import exceptions.SqlExecuteException;
 import infrastructure.connection.IDBConnection;
+import constant.ExceptionsMessage;
+
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -27,10 +28,19 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
     Field DateCreateAt = DSL.field(Tables.BALANCE.CREATE_AT.getName(), SQLDataType.DATE);
     private final int INITIAL_VERSION = 0;
 
+    /**
+     *
+     * @param connection
+     */
     public RepositoryDataBalance(IDBConnection connection){
         this.connection = connection;
     }
 
+    /**
+     * 日の支出データを取得
+     * @param params データ取得に必要なパラメータ
+     * @return 日の支出データ
+     */
     public List<entities.Balance> getDataDayRecords(ReqParamsGetDataDay params){
         Result<Record> result = connection.create
                 .select()
@@ -57,8 +67,13 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
 
     }
 
+    /**
+     * 日の支出合計データを取得
+     * @param params　データ取得に必要なパラメータ
+     * @return 日の支出合計データ
+     */
     public entities.SummaryDayBalance getDataDaySummaryRecords(ReqParamsGetDataDay params){
-        Record2<long, long> result =
+        Record2<BigDecimal, BigDecimal> result =
                 connection.create
                 .select(DSL.sum(Tables.BALANCE.INCOME).as(Tables.BALANCE.INCOME.getName()), DSL.sum(Tables.BALANCE.SPENDING).as(Tables.BALANCE.SPENDING.getName()))
                 .from(Tables.BALANCE)
@@ -74,8 +89,14 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
                 result.getValue(Tables.BALANCE.SPENDING.getName(), long.class)
         );
     }
+
+    /**
+     * 月の収支データ(日単位)を取得
+     * @param params データ取得に必要なパラメータ
+     * @return 月の収支データ
+     */
     public List<entities.SummaryDayBalance> getDataMonthRecords(ReqParamsGetDataMonth params){
-        Result<Record3> result = connection.create
+        Result<Record3<BigDecimal, BigDecimal, Timestamp>> result = connection.create
                 .select(Tables.BALANCE.INCOME, Tables.BALANCE.SPENDING, DateCreateAt)
                 .from(
                         connection.create
@@ -98,7 +119,7 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
         result.forEach(rec -> {
             Instant InstantCreateAt = rec.getValue(Tables.BALANCE.CREATE_AT.getName(), Date.class).toInstant();
             LocalDate date = LocalDate.ofInstant(InstantCreateAt, ZoneId.systemDefault());
-            long income = rec.getValue(Tables.BALANCE.INCOME.getName(),long.class);
+            long income = rec.getValue(Tables.BALANCE.INCOME.getName(), long.class);
             long spending = rec.getValue(Tables.BALANCE.SPENDING.getName(),long.class);
 
             monthRecords.add(new entities.SummaryDayBalance(date, income, spending));
@@ -108,6 +129,12 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
         return monthRecords;
 
     }
+
+    /**
+     * 月の収支合計データを取得
+     * @param params データ取得に必要なパラメータ
+     * @return 月の収支合計データ
+     */
     public entities.SummaryMonthBalance getDataMonthSummaryRecords(ReqParamsGetDataMonth params){
         Record2<BigDecimal, BigDecimal> result =
                 connection.create
@@ -125,8 +152,14 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
                 result.getValue(Tables.BALANCE.SPENDING.getName(), long.class)
         );
     }
+
+    /**
+     * 年の収支データ(月単位)を取得
+     * @param params データ取得に必要なパラメータ
+     * @return 月の収支合計データ
+     */
     public List<entities.SummaryMonthBalance> getDataYearRecords(ReqParamsGetDataYear params){
-        Result<Record3<long, long, Date>> result = connection.create
+        Result<Record3<Long, Long, Date>> result = connection.create
                 .select(Tables.BALANCE.INCOME, Tables.BALANCE.SPENDING, DateCreateAt)
                 .from(
                         connection.create
@@ -157,6 +190,12 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
 
         return yearRecords;
     }
+
+    /**
+     * 年の収支合計データを取得
+     * @param params
+     * @return
+     */
     public entities.SummaryYearBalance getDataYearSummaryRecords(ReqParamsGetDataYear params){
         Record2<BigDecimal, BigDecimal> result =
                 connection.create
@@ -174,7 +213,12 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
                 result.getValue(Tables.BALANCE.SPENDING.getName(), long.class)
         );
     }
-    public Result<Record> insertDataDay(ReqParamsInsertDataDay params){
+
+    /**
+     * 収支データを登録
+     * @param params 収支データ
+     */
+    public void insertDataDay(ReqParamsInsertDataDay params){
         connection.create.transaction(transaction ->{
             try {
                 DSLContext ctx = DSL.using(transaction);
@@ -196,11 +240,9 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
                         returningResult(Tables.BALANCE.ID).
                         fetchOne();
 
-                if(insertResult.getValue(Tables.BALANCE.ID) == null) {
-                    throw new Exception("");
-                }
+                int balnaceId = insertResult.getValue(Tables.BALANCE.ID, int.class);
 
-                insertTags(ctx, params.getUsersId(), )
+                insertTags(ctx, params.getUsersId(), balnaceId, params.getTags());
             }catch(Exception e){
                 throw new SqlExecuteException(e);
             }
@@ -209,28 +251,82 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
         return;
 
     }
-    public Result<Record> updateDataDay(ReqParamsUpdateDataDay params){
-        insertTags(params.getUsersId(), params.getBalanceId(), params.getTags());
-        connection.create.
-                update(Tables.BALANCE).
-                set(Tables.BALANCE.INCOME, params.getIncome()).
-                set(Tables.BALANCE.SPENDING, params.getSpending()).
-                set(Tables.BALANCE.VERSION, Tables.BALANCE.VERSION.add(1)).
-                set(Tables.BALANCE.UPDATE_AT, Timestamp.valueOf(LocalDateTime.now())).
-                where(Tables.BALANCE.USERS_ID.eq(params.getUsersId())).
-                and(Tables.BALANCE.ID.eq(params.getBalanceId())).
-                execute();
-    }
-    public Result<Record> deleteDataDay(ReqParamsDeleteDataDay params){
 
+    /**
+     * 収支データの更新
+     * @param params 更新データ
+     */
+    public void updateDataDay(ReqParamsUpdateDataDay params){
+        connection.create.transaction(transaction -> {
+            try {
+                DSLContext ctx = DSL.using(transaction);
+
+                insertTags(ctx, params.getUsersId(), params.getBalanceId(), params.getTags());
+
+                int updateCount = ctx.
+                        update(Tables.BALANCE).
+                        set(Tables.BALANCE.INCOME, params.getIncome()).
+                        set(Tables.BALANCE.SPENDING, params.getSpending()).
+                        set(Tables.BALANCE.VERSION, Tables.BALANCE.VERSION.add(1)).
+                        set(Tables.BALANCE.UPDATE_AT, Timestamp.valueOf(LocalDateTime.now())).
+                        where(Tables.BALANCE.USERS_ID.eq(params.getUsersId())).
+                        and(Tables.BALANCE.ID.eq(params.getBalanceId())).
+                        execute();
+
+                if (updateCount != 1) {
+                    throw new SqlExecuteException(ExceptionsMessage.FAILED_SQL_UPDATE);
+                }
+            } catch (Exception e) {
+                throw new RepositoryException(e);
+            }
+        });
     }
 
-    private List<String> getBalanceTagsById(int id){
+    /**
+     * 収支データの削除
+     * @param params 削除に必要なパラメータ
+     */
+    public void deleteDataDay(ReqParamsDeleteDataDay params){
+        connection.create.transaction(transaction -> {
+            try {
+                int deleteCount;
+                DSLContext ctx = DSL.using(transaction);
+
+                deleteCount = ctx.
+                        deleteFrom(Tables.BALANCE).
+                        where(Tables.BALANCE.ID.eq(params.getBalanceId())).
+                        execute();
+
+                if (deleteCount != 1) {
+                    throw new SqlExecuteException(ExceptionsMessage.FAILED_SQL_DELETE);
+                }
+
+                deleteCount = ctx.
+                        deleteFrom(Tables.BALANCE).
+                        where(Tables.BALANCE.ID.eq(params.getBalanceId())).
+                        execute();
+
+                if (deleteCount >= 1) {
+                    throw new SqlExecuteException(ExceptionsMessage.FAILED_SQL_DELETE);
+                }
+            }catch (Exception e){
+                throw new RepositoryException(e);
+            }
+
+        });
+    }
+
+    /**
+     *
+     * @param TagsMapId タグのマップID
+     * @return タグ
+     */
+    private List<String> getBalanceTagsById(int TagsMapId){
         Result<Record> result = connection.create
                 .select()
                 .from(Tables.TAGS_MAP)
                 .leftJoin(Tables.TAGS).on(Tables.TAGS_MAP.TAGS_ID.eq(Tables.TAGS.ID))
-                .where(Tables.TAGS_MAP.BALANCE_ID.eq(id))
+                .where(Tables.TAGS_MAP.BALANCE_ID.eq(TagsMapId))
                 .fetch();
 
         List<String> tags = new ArrayList<>();
@@ -243,12 +339,19 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
         return tags;
     }
 
-    private void insertTags(int userId, int balanceId, List<String> tags){
+    /**
+     * タグを登録
+     * @param ctx　コンテキスト
+     * @param userId ユーザID
+     * @param balanceId 収支ID
+     * @param tags 登録するタグ
+     */
+    private void insertTags(DSLContext ctx, int userId, int balanceId, List<String> tags){
 
-        connection.create.deleteFrom(Tables.TAGS_MAP).where(Tables.TAGS_MAP.BALANCE_ID.eq(balanceId));
+        ctx.deleteFrom(Tables.TAGS_MAP).where(Tables.TAGS_MAP.BALANCE_ID.eq(balanceId));
 
         tags.forEach(tag -> {
-            Record1<Integer> result =  connection.create
+            Record1<Integer> result =  ctx
                     .select(Tables.TAGS.ID)
                     .from(Tables.TAGS)
                     .where(Tables.TAGS.USERS_ID.eq(userId))
@@ -258,32 +361,32 @@ public class RepositoryDataBalance implements IRepositoryDataBalance {
             int tagId;
             if(result == null){
                 TagsRecord tagsRecord =
-                        connection.create.
-                                insertInto(
-                                        Tables.TAGS,
-                                        Tables.TAGS.NAME,
-                                        Tables.TAGS.USERS_ID).
-                                values(
-                                        tag,
-                                        userId).
-                                returning(
-                                        Tables.TAGS.ID).
-                                fetchOne();
+                        ctx.
+                        insertInto(
+                                Tables.TAGS,
+                                Tables.TAGS.NAME,
+                                Tables.TAGS.USERS_ID).
+                        values(
+                                tag,
+                                userId).
+                        returning(
+                                Tables.TAGS.ID).
+                        fetchOne();
 
                 tagId  = tagsRecord.getId();
             }else {
                 tagId = result.get(Tables.TAGS.ID);
             }
 
-            connection.create.
-                    insertInto(
-                            Tables.TAGS_MAP,
-                            Tables.TAGS_MAP.BALANCE_ID,
-                            Tables.TAGS_MAP.TAGS_ID).
-                    values(
-                            balanceId,
-                            tagId
-                    ).execute();
+            ctx.
+            insertInto(
+                    Tables.TAGS_MAP,
+                    Tables.TAGS_MAP.BALANCE_ID,
+                    Tables.TAGS_MAP.TAGS_ID).
+            values(
+                    balanceId,
+                    tagId
+            ).execute();
         });
 
     }

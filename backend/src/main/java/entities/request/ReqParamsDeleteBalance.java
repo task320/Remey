@@ -1,24 +1,24 @@
-package adapters.request.data;
+package entities.request;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class ReqParamsDeleteDataDay {
-    private String usersId;
-    private String balanceId;
+    private int usersId;
+    private int balanceId;
 
     public ReqParamsDeleteDataDay(String reqBodyJson) {
         JsonObject jb = new JsonParser().parse(reqBodyJson).getAsJsonObject();
-        usersId = jb.get("users_id").getAsString();
-        balanceId = jb.get("balance_id").getAsString();
+        usersId = jb.get("users_id").getAsInt();
+        balanceId = jb.get("balance_id").getAsInt();
 
     }
 
-    public String getUsersId() {
+    public int getUsersId() {
         return this.usersId;
     }
 
-    public String getBalanceId() {
+    public int getBalanceId() {
         return this.balanceId;
     }
 }
